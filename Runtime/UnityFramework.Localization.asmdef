@@ -14,7 +14,14 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": [],
+    "defineConstraints": [
+        "ZKO_LOCALIZATION_HAS_NODIN",
+        "ZKO_LOCALIZATION_HAS_TMP || ZKO_LOCALIZATION_UGUI_HAS_TMP"
+    ],
+    "versionDefines": [
+        { "name": "com.zko.nodin", "expression": "1.8.0", "define": "ZKO_LOCALIZATION_HAS_NODIN" },
+        { "name": "com.unity.textmeshpro", "expression": "3.0.0", "define": "ZKO_LOCALIZATION_HAS_TMP" },
+        { "name": "com.unity.ugui", "expression": "2.0.0", "define": "ZKO_LOCALIZATION_UGUI_HAS_TMP" }
+    ],
     "noEngineReferences": false
 }

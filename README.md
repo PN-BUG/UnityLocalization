@@ -1,6 +1,6 @@
 # ZKO Localization
 
-可独立安装的 Unity UPM 本地化包，最低目标版本为 Unity 2023.2。包名 `com.zko.localization`，版本 `1.0.0`。
+可直接通过 Git URL 安装的 Unity UPM 本地化包，最低目标版本为 Unity 2022.3。包名 `com.zko.localization`，版本 `1.0.1`。
 
 ## 功能与依赖
 
@@ -9,11 +9,16 @@
 | 必需依赖 | 版本 | 用途 |
 | --- | --- | --- |
 | `com.unity.localization` | 1.5.3 | Locale、String/Asset Tables、Addressables 资源加载 |
-| `com.unity.ugui` | 2.0.0 | uGUI 和此版本 Unity 中的 TextMeshPro |
+| `com.unity.ugui` | 1.0.0 起 | 接受项目现有 uGUI 1.x / 2.x，不强制升级到 2.0 |
 | `com.unity.nuget.newtonsoft-json` | 3.2.1 | 编辑器翻译服务的 JSON 读写 |
-| `com.zko.nodin` | 1.8.0 | Inspector 标签、调试信息与按钮 |
+| `com.zko.nodin` | 1.8.0 起 | Inspector 标签、调试信息与按钮；包内引导从 Git 补齐 |
+| TextMeshPro | 3.x 或 uGUI 2.x 自带 | uGUI 1.x 项目缺少 TMP 时，引导安装 `com.unity.textmeshpro@3.0.6` |
 
-UnityFramework 核心、ToolsHub、Rewired、JoystickIcons 和项目业务代码均不是本包依赖。Nodin 是必需依赖；若目标项目没有可解析它的包源，先安装 [Nodin](https://github.com/PN-BUG/Nodin)，再安装本包。
+UnityFramework 核心、ToolsHub、Rewired、JoystickIcons 和项目业务代码均不是本包依赖。无需先安装 ToolsHub 或 Nodin。
+
+Nodin 继续保留为实际依赖，但不再作为 `package.json` 中的注册表版本请求。UnityLocalization 自带独立的 Editor 引导程序集，在包完成解析后通过 Package Manager 从 `https://github.com/PN-BUG/Nodin.git` 补齐 Nodin；旧版 uGUI 项目缺少 TMP 时在同一次请求中补齐 TMP。主运行时与工具程序集在这些依赖可用后才启用，首次导入引导自身不引用 Nodin、TMP 或本地化主程序集。
+
+已满足版本的依赖会保留；版本过旧的本地/嵌入依赖不会被 Git 包覆盖，会提示先更新对应源码。
 
 ## 安装
 
@@ -25,12 +30,20 @@ UnityFramework 核心、ToolsHub、Rewired、JoystickIcons 和项目业务代码
 https://github.com/PN-BUG/UnityLocalization.git
 ```
 
-需要固定版本时使用 `https://github.com/PN-BUG/UnityLocalization.git#v1.0.0`。使用 UnityToolsHub 时，也可从「可选模块 > 本地化模块」显式安装；不会自动安装。
+需要固定版本，或重试旧版依赖解析失败的安装时，使用：
+
+```text
+https://github.com/PN-BUG/UnityLocalization.git#v1.0.1
+```
+
+添加此 URL 后等待包内引导完成 Nodin/TMP 安装，再等待 Unity 导入和编译完成即可。整个流程由 UnityLocalization 自己处理，不需要其他工具。若下载失败，可在恢复网络后选择 `Tools > Localization > 修复模块依赖` 重试；自动安装每个 Editor 会话最多尝试一次，避免失败后反复发起请求。
+
+使用 UnityToolsHub 时，也可从「可选模块 > 本地化模块」显式安装本包，依赖仍由本包处理。
 
 本地目录和压缩包安装方式：
 
-1. 先安装 Nodin 1.8.0 或兼容版本。
-2. 在 Package Manager 中选择 **Add package from disk**，选中本目录的 `package.json`；或选择 **Add package from tarball**，选中交付的 `com.zko.localization-1.0.0.tgz`。
+1. 在 Package Manager 中选择 **Add package from disk**，选中本目录的 `package.json`；或选择 **Add package from tarball**，选中交付的 `com.zko.localization-1.0.1.tgz`。
+2. 等待包内引导自动安装所缺依赖。
 3. 在 Unity Localization 中创建项目自己的 Localization Settings、Locales 和字符串表，并完成 Addressables 配置。
 4. 需要统一语言策略时，通过 `Project Settings > UnityFramework > Localization` 创建配置。配置仍保存在项目的 `Assets/Resources/UnityFrameworkLocalizationConfig.asset`。
 
@@ -58,6 +71,8 @@ LocalizedTextPresentation.NotifyChanged();
 
 ## 验证范围
 
-已静态核对包结构、程序集依赖和迁移前后的脚本/程序集 `.meta`。尚未完成 Unity 包解析、Editor 导入及脚本编译验证；静态检查不能替代这些验证。
+已静态核对包结构、程序集依赖、uGUI 1.x / 2.x 的程序集启用条件，以及迁移前后的脚本/程序集 `.meta`。
 
-UPM 目录和包清单依据 Unity 2023.2 官方文档：[创建自定义包](https://docs.unity3d.com/2023.2/Documentation/Manual/CustomPackages.html)、[包清单](https://docs.unity3d.com/2023.2/Documentation/Manual/upm-manifestPkg.html)。
+在 Unity 2023.2.22f1、uGUI 2.0、已有 Nodin 1.8.0 的项目中，已通过 MCP 确认包解析为 `1.0.1`、引导程序集导入并加载、脚本重新编译后没有 C# 编译错误。缺少 Nodin/TMP 的首次安装，以及 Unity 2022.3 / uGUI 1.x 环境仍需实际项目验证；这些场景目前只完成了依赖与程序集条件的静态核对。
+
+UPM 目录、包清单及按包版本控制程序集依据 Unity 官方文档：[包清单](https://docs.unity3d.com/2022.3/Documentation/Manual/upm-manifestPkg.html)、[程序集版本条件](https://docs.unity3d.com/2022.3/Documentation/Manual/ScriptCompilationAssemblyDefinitionFiles.html#define-symbols)。

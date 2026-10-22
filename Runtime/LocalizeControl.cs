@@ -22,7 +22,11 @@ public class LocalizeControl : MonoBehaviour
             if (isQuitting) return null;
             if (instance == null)
             {
+#if UNITY_2023_1_OR_NEWER
                 instance = FindAnyObjectByType<LocalizeControl>();
+#else
+                instance = FindObjectOfType<LocalizeControl>();
+#endif
                 if (instance == null)
                     instance = new GameObject("[Singleton] LocalizeControl").AddComponent<LocalizeControl>();
             }

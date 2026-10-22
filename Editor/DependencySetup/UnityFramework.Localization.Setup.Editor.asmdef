@@ -1,0 +1,14 @@
+{
+    "name": "UnityFramework.Localization.Setup.Editor",
+    "rootNamespace": "ZKO.Localization.Editor",
+    "references": [],
+    "includePlatforms": ["Editor"],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

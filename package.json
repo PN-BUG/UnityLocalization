@@ -1,14 +1,13 @@
 {
   "name": "com.zko.localization",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "displayName": "ZKO Localization",
   "description": "Unity Localization authoring pipeline, language policy, text receivers and localized component switching. Input-specific presentation is provided by an external adapter.",
-  "unity": "2023.2",
+  "unity": "2022.3",
   "dependencies": {
     "com.unity.localization": "1.5.3",
-    "com.unity.ugui": "2.0.0",
-    "com.unity.nuget.newtonsoft-json": "3.2.1",
-    "com.zko.nodin": "1.8.0"
+    "com.unity.ugui": "1.0.0",
+    "com.unity.nuget.newtonsoft-json": "3.2.1"
   },
   "keywords": ["localization", "translation", "text", "editor"],
   "author": { "name": "zko" },
