@@ -1,0 +1,22 @@
+{
+    "name": "UnityFramework.Localization.Editor",
+    "rootNamespace": "UnityFramework.Localization.Editor",
+    "references": [
+        "UnityFramework.Localization",
+        "Unity.Localization",
+        "Unity.Localization.Editor",
+        "Unity.TextMeshPro",
+        "UnityEngine.UI"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
