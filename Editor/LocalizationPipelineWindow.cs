@@ -2656,8 +2656,14 @@ public sealed class LocalizationPipelineWindow : EditorWindow
     {
         Directory.CreateDirectory(DefaultDirectory);
         AssetDatabase.Refresh();
-        return LocalizationEditorSettings.GetStringTableCollection(DefaultCollection) ??
-               LocalizationEditorSettings.CreateStringTableCollection(DefaultCollection, DefaultDirectory);
+        var collection = LocalizationEditorSettings.GetStringTableCollection(DefaultCollection);
+        if (collection != null) return collection;
+
+        // Localization batches asset creation; initialize Addressables before entering that batch.
+        if (UnityEditor.AddressableAssets.AddressableAssetSettingsDefaultObject.GetSettings(true) == null)
+            throw new InvalidOperationException("无法初始化 Addressables 设置，已取消创建默认字符串表集合。请在 Addressables Groups 窗口创建设置后重试。");
+
+        return LocalizationEditorSettings.CreateStringTableCollection(DefaultCollection, DefaultDirectory);
     }
 
     private static string EnsureDefaultStringEntry(StringTableCollection collection, string source)

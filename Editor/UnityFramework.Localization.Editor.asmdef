@@ -5,6 +5,7 @@
         "UnityFramework.Localization",
         "Unity.Localization",
         "Unity.Localization.Editor",
+        "Unity.Addressables.Editor",
         "Unity.TextMeshPro",
         "UnityEngine.UI"
     ],
